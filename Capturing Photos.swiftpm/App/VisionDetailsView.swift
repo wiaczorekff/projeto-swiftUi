@@ -2,14 +2,17 @@
 //  SwiftUIView.swift
 //  
 //
-//  Created by Student10 on 22/09/23.
+//  Created by Student10 on 25/09/23.
 //
 
 import SwiftUI
 
 struct VisionDetailsView: View {
+    @State var name: String = "Astigmatismo"
+    @State var info: String = ""
+    
     var body: some View {
-        Text("Hello, World!")
+        Text("Hello, \(name)!")
     }
 }
 

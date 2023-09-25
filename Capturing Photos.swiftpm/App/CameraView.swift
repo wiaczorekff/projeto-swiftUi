@@ -26,7 +26,12 @@ struct CameraView: View {
         VStack{
             NavigationStack {
                 GeometryReader { geometry in
-                    ViewfinderView(image:  $model.viewfinderImage )
+                    ViewfinderView(image:  $model.viewfinderImage)
+                        .blur(radius: blurAmount)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                        .scaledToFill()
+                        .frame(width: 400, height: 400)
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                     
                         .overlay(alignment: .top) {
                             topButtonsView()
@@ -45,7 +50,7 @@ struct CameraView: View {
                                 .accessibilityLabel("View Finder")
                                 .accessibilityAddTraits([.isImage])
                         }
-                        .background(.black)
+                        .background(.gray)
                 }
                 .task {
                     await model.camera.start()
@@ -68,20 +73,25 @@ struct CameraView: View {
         }
     }
     
+    @State private var blurAmount = 0.0
     private func filters() -> some View {
         NavigationStack {
-            ScrollView {
-                VStack {
-                    ForEach(arrayVisualDiseases) { disease in
-                        NavigationLink(destination: VisionDetailsView()) {
-                            Label(disease.name, systemImage: "")
+            VStack {
+                /*ScrollView {
+                    VStack {
+                        ForEach(arrayVisualDiseases) { disease in
+                            //NavigationLink(destination: VisionDetailsView(name: disease.name, info: disease.info)) {
+                            Label(disease.name, systemImage: "info.circle")
+                            //}
                         }
                     }
-                }
+                }.frame(height: 50)*/
+                Slider(value: $blurAmount, in: 0...10).padding()
             }
         }
     }
     
+        
     private func bottomButtonsView() -> some View {
         VStack {
             filters()
